@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 
 import api from './routes/api'
 
-const app = express()
+export const app = express()
 
 app.disable('etag');
 
