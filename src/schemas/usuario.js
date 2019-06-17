@@ -1,5 +1,7 @@
-import mongoose, { Schema } from 'mongoose'
+const mongoose = require('mongoose');
 
+/*
+import mongoose, { Schema } from 'mongoose'
 
 const usuario = new Schema({
   id: Schema.Types.ObjectId,
@@ -10,3 +12,13 @@ const usuario = new Schema({
 }, { timestamps: { createdAt: 'creacion', updatedAt: 'modificacion'}})
 
 export default mongoose.model('Usuario', usuario)
+*/
+
+const usuarioSchema = mongoose.Schema({
+  username: { type: String, require: true },
+  juegos: { type: Array, default: [] }
+});
+
+const Usuario = mongoose.model('Usuario', usuarioSchema);
+
+module.exports = Usuario;
