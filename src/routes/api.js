@@ -10,7 +10,10 @@ module.exports = (app) => {
 
   app.route('/:username/fabrica').post(UsuarioController.crearFabrica);
 
-  app.route('/:username/fabricas/:idFabrica').get(UsuarioController.getFabrica)
+  app.route('/:username/fabricas/:idFabrica').get(UsuarioController.getFabrica);
   
+  app.route('/:username/fabricas/:idFabrica').delete(UsuarioController.borrarFabrica);
+
+  app.route('/:username/fabricas/:idFabrica').put(UsuarioController.actualizarFabrica);
 
 };
