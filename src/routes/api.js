@@ -7,6 +7,10 @@ module.exports = (app) => {
   app.route('/:username').get(UsuarioController.getUsuario);
   
   app.route('/:username').post(UsuarioController.agregarUsuario);
+
+  app.route('/:username/fabrica').post(UsuarioController.crearFabrica);
+
+  app.route('/:username/fabricas/:idFabrica').get(UsuarioController.getFabrica)
   
 
 };
