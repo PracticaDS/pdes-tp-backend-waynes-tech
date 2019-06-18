@@ -1,11 +1,10 @@
-import mongoose, { Schema } from 'mongoose'
+const mongoose = require('mongoose');
 
-const fabrica = new Schema({
-  id: Schema.Types.ObjectId,
-  tamanio: { n: Number, m: Number },
-  fabrica: [[{  type: Schema.Types.ObjectId, ref: 'tipoMaquina' }]],
-  creacion: Date,
-  modificacion: Date
-}, { timestamps: { createdAt: 'creacion', updatedAt: 'modificacion'}})
+const fabrica = mongoose.Schema({
+  username: { type: String, require: true },
+  celdas: { type: Array, default: [] }
+});
 
-export default mongoose.model('Fabrica', fabrica)
+const Fabrica = mongoose.model('Fabrica', fabrica);
+
+module.exports = Fabrica;

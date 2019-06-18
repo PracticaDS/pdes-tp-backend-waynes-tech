@@ -1,10 +1,12 @@
-import mongoose from 'mongoose'
+const mongoose = require('mongoose');
 
-const maquina = new mongoose.Schema({
-  id: mongoose.Schema.Types.ObjectId,
-  direccion: String,
-  tipoMaquina: String,
-  creacion: Date,
-  modificacion: Date
-}, { timestamps: { createdAt: 'creacion', updatedAt: 'modificacion' } })
-export default mongoose.model('Maquina', maquina)
+const maquina = mongoose.Schema({
+  tipoMaquina: { type: String },
+  direccion: {type:String},
+  imagen: {type: String}, // todavia no se como poner una imagen
+  materiales: {type:String}
+});
+
+const Maquina = mongoose.model('Maquina', maquina);
+
+module.exports = Maquina;
