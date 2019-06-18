@@ -5,9 +5,9 @@ const mongoose = require('mongoose');
 
 const celda = mongoose.Schema({
   maquina: { type: Maquina }, // No se si funcionará
-  idFila:{Number}, 
-  idColumna:{Number},
-  idFabrica:{Number}
+  idFila:{type:Number}, 
+  idColumna:{type:Number},
+  idFabrica:{type:Number}
 
 });
 

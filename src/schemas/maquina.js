@@ -4,7 +4,7 @@ const maquina = mongoose.Schema({
   tipoMaquina: { type: String },
   direccion: {type:String},
   imagen: {type: String}, // todavia no se como poner una imagen
-  materiales: {type:String}
+  materiales: {type:Array}
 });
 
 const Maquina = mongoose.model('Maquina', maquina);
