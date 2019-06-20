@@ -125,7 +125,7 @@ const UsuarioController = {
     Usuario
       .findOne({ username: req.params.username })
       .then((usuario) => {
-        const fabrica = usuario.fabricas.find(f => f.id.toString() === req.params.idFabrica);
+        const fabrica = usuario.fabricas.find(f => f.id_fabrica.toString() === req.params.idFabrica);
         if (!fabrica) return res.status(NOT_FOUND).json();
         const ganancias = fabrica.ganancias
         return res.status(OK).json(ganancias);
