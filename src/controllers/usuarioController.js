@@ -3,10 +3,18 @@ const mongoose = require('mongoose');
 const Usuario = require('../schemas/usuario');
 
 const builderFabrica = (body) => ({
-  id: body.id || mongoose.Types.ObjectId(),
+  id_fabrica: body.id_fabrica || mongoose.Types.ObjectId(),
   nombre: body.nombre,
-  celdas: body.celdas || []  
+  celdas: body.celdas || [],
+  ganancias: body.ganancias || 0 
 });
+
+const builderUpdateFabrica = (body, fabricaVieja) =>({
+  id_fabrica: fabricaVieja.id_fabrica,
+  nombre: body.nombre || fabricaVieja.nombre,
+  celdas: fabricaVieja.celdas,
+  ganancias: body.ganancias || fabricaVieja.ganancias  
+}); 
 
 const UsuarioController = {
   getUsuarios: (_, res, next) => {
@@ -50,7 +58,7 @@ const UsuarioController = {
     Usuario
       .findOne({ username: req.params.username })
       .then((usuario) => {
-        const fabrica = usuario.fabricas.find(f => f.id.toString() === req.params.idFabrica);
+        const fabrica = usuario.fabricas.find(f => f.id_fabrica.toString() === req.params.idFabrica);
         if (!fabrica) return res.status(NOT_FOUND).json();
         return res.status(OK).json(fabrica);
       })
@@ -76,7 +84,7 @@ const UsuarioController = {
     Usuario
       .findOne({ username: req.params.username })
       .then((usuario) => {
-        const fabrica = usuario.fabricas.find(f => f.id.toString() === req.params.idFabrica);
+        const fabrica = usuario.fabricas.find(f => f.id_fabrica.toString() === req.params.idFabrica);
         if (!fabrica) return res.status(NOT_FOUND).json();
 
         return Usuario.findOneAndUpdate(
@@ -92,10 +100,10 @@ const UsuarioController = {
     Usuario
       .findOne({ username: req.params.username })
       .then((usuario) => {
-        const fabricaAntes = usuario.fabricas.find(f => f.id.toString() === req.params.idFabrica);
+        const fabricaAntes = usuario.fabricas.find(f => f.id_fabrica.toString() === req.params.idFabrica);
         if (!fabricaAntes) return res.status(NOT_FOUND).json();
 
-        const fabricaActualizada = builderFabrica(req.body, fabricaAntes.id);
+        const fabricaActualizada = builderUpdateFabrica(req.body, fabricaAntes);
         Usuario.findOneAndUpdate(
           { username: req.params.username },
           { $pull: { fabricas: fabricaAntes } },
@@ -109,6 +117,18 @@ const UsuarioController = {
         }).catch(next);
 
         return res.status(OK).json(fabricaActualizada);
+      })
+      .catch(next);
+  },
+
+  getGanancias:(req, res, next) => {
+    Usuario
+      .findOne({ username: req.params.username })
+      .then((usuario) => {
+        const fabrica = usuario.fabricas.find(f => f.id.toString() === req.params.idFabrica);
+        if (!fabrica) return res.status(NOT_FOUND).json();
+        const ganancias = fabrica.ganancias
+        return res.status(OK).json(ganancias);
       })
       .catch(next);
   }
