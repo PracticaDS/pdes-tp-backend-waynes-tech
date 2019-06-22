@@ -18,4 +18,6 @@ module.exports = (app) => {
   app.route('/:username/fabricas/:idFabrica').put(UsuarioController.actualizarFabrica);
 
   app.route('/:username/ganancias/:idFabrica').get(UsuarioController.getGanancias);
+
+  app.route('/:username/celdas/:idFabrica').put(UsuarioController.agregarCelda);
 };

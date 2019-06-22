@@ -4,7 +4,7 @@ const Usuario = require('../schemas/usuario');
 
 const builderFabrica = (body) => ({
   id_fabrica: body.id_fabrica || mongoose.Types.ObjectId(),
-  nombre: body.nombre,
+  nombre: body.nombre || "nombre1234",
   celdas: body.celdas || [],
   ganancias: body.ganancias || 0 
 });
@@ -14,6 +14,13 @@ const builderUpdateFabrica = (body, fabricaVieja) =>({
   nombre: body.nombre || fabricaVieja.nombre,
   celdas: fabricaVieja.celdas,
   ganancias: body.ganancias || fabricaVieja.ganancias  
+}); 
+
+const builderCrearCelda = (body,fabricaVieja) =>({
+  id_fabrica: fabricaVieja.id_fabrica,
+  nombre: fabricaVieja.nombre,
+  celdas: fabricaVieja.celdas.concat([body.celda]),
+  ganancias: fabricaVieja.ganancias  
 }); 
 
 const UsuarioController = {
@@ -129,6 +136,31 @@ const UsuarioController = {
         if (!fabrica) return res.status(NOT_FOUND).json();
         const ganancias = fabrica.ganancias
         return res.status(OK).json(ganancias);
+      })
+      .catch(next);
+  },
+
+  agregarCelda: (req, res, next) => {
+    Usuario
+      .findOne({ username: req.params.username })
+      .then((usuario) => {
+        const fabricaAntes = usuario.fabricas.find(f => f.id_fabrica.toString() === req.params.idFabrica);
+        if (!fabricaAntes) return res.status(NOT_FOUND).json();
+
+        const fabricaActualizada = builderCrearCelda(req.body, fabricaAntes);
+        Usuario.findOneAndUpdate(
+          { username: req.params.username },
+          { $pull: { fabricas: fabricaAntes } },
+          { new: true, useFindAndModify: false }
+        ).then(() => {
+          Usuario.findOneAndUpdate(
+            { username: req.params.username },
+            { $push: { fabricas: fabricaActualizada } },
+            { new: true, useFindAndModify: false }
+          ).catch(next);
+        }).catch(next);
+
+        return res.status(OK).json(fabricaActualizada);
       })
       .catch(next);
   }
