@@ -9,12 +9,20 @@ const builderFabrica = (body) => ({
   ganancias: body.ganancias || 0 
 });
 
+/*
 const builderUpdateFabrica = (body, fabricaVieja) =>({
   id_fabrica: fabricaVieja.id_fabrica,
   nombre: body.nombre || fabricaVieja.nombre,
   celdas: fabricaVieja.celdas,
   ganancias: body.ganancias || fabricaVieja.ganancias  
 }); 
+*/
+const builderUpdateFabrica = (body, fabricaVieja) =>({
+  id_fabrica: fabricaVieja.id_fabrica,
+  nombre: body.nombre || fabricaVieja.nombre,
+  celdas: body.celdas || fabricaVieja.celdas,
+  ganancias: body.ganancias || fabricaVieja.ganancias  
+});
 
 const builderCrearCelda = (body,fabricaVieja) =>({
   id_fabrica: fabricaVieja.id_fabrica,
