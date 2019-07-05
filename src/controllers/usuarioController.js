@@ -6,17 +6,9 @@ const builderFabrica = (body) => ({
   id_fabrica: body.id_fabrica || mongoose.Types.ObjectId(),
   nombre: body.nombre || "nombre1234",
   celdas: body.celdas || [],
-  ganancias: body.ganancias || 0 
+  ganancias: 50000 
 });
 
-/*
-const builderUpdateFabrica = (body, fabricaVieja) =>({
-  id_fabrica: fabricaVieja.id_fabrica,
-  nombre: body.nombre || fabricaVieja.nombre,
-  celdas: fabricaVieja.celdas,
-  ganancias: body.ganancias || fabricaVieja.ganancias  
-}); 
-*/
 const builderUpdateFabrica = (body, fabricaVieja) =>({
   id_fabrica: fabricaVieja.id_fabrica,
   nombre: body.nombre || fabricaVieja.nombre,
@@ -45,7 +37,10 @@ const UsuarioController = {
       .findOne({ username })
       .then((usuario) => {
         if (!usuario) {
-          return res.status(NOT_FOUND).json();
+          //return res.status(NOT_FOUND).json();
+          return new Usuario({ username })
+          .save()
+          .then(nuevoUsuario => res.status(OK).json(nuevoUsuario))
         }
         return res.status(OK).json(usuario);
       })
