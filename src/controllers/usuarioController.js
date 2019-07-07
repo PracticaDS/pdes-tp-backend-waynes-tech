@@ -90,6 +90,13 @@ const UsuarioController = {
       .catch(next);
   },
 
+  borrarUsuario: (req, res, next) => {
+    Usuario
+      .deleteOne({ username: req.params.username })
+      .then(() => res.status(NO_CONTENT).json())
+      .catch(next);
+  },
+
   borrarFabrica: (req, res, next) => {
     Usuario
       .findOne({ username: req.params.username })

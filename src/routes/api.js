@@ -8,6 +8,8 @@ module.exports = (app) => {
   
   app.route('/api/:username').post(UsuarioController.agregarUsuario);
 
+  app.route('/api/:username').delete(UsuarioController.borrarUsuario);
+
   app.route('/api/:username/fabrica').post(UsuarioController.crearFabrica);
 
   app.route('/api/:username/fabricas/:idFabrica').get(UsuarioController.getFabrica);
