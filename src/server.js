@@ -1,22 +1,26 @@
-import express from 'express'
-import morgan from 'morgan'
-import bodyParser from 'body-parser'
+const express = require('express');
+const promBundle = require('express-prom-bundle');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const app = express();
 
-import api from './routes/api'
+const domain = {
+  host: process.env.HOST || 'localhost',
+  port: process.env.PORT || 8080
+};
 
-export const app = express()
+// Prometheus
+app.use(promBundle({ includeMethod: true, includePath: true, metricsPath: '/prometheus' }));
 
-app.disable('etag');
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-app.use(morgan('dev'))
+app.use(cors());
 
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+require('./routes/api')(app);
 
-app.use('/api', api)
+app.listen(domain.port, () => {
+  console.info(`Aplicación iniciada en: http://${domain.host}:${domain.port}`);
+});
 
-app.get('/', (req, res) => {
-  res.status(200).send('hello')
-})
-
-export default app
+module.exports = app;
