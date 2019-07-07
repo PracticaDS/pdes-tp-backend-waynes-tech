@@ -14,7 +14,6 @@ module.exports = (app) => {
   
   app.route('/api/:username/fabricas/:idFabrica').delete(UsuarioController.borrarFabrica);
 
-  // Sirve para actualizar el nombre de la fábrica y cambiar el valor de las ganancias
   app.route('/api/:username/fabricas/:idFabrica').put(UsuarioController.actualizarFabrica);
 
   app.route('/api/:username/ganancias/:idFabrica').get(UsuarioController.getGanancias);
