@@ -3,6 +3,7 @@ package pdes.waynestech
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import scala.concurrent.duration._
+import java.util.UUID.randomUUID
 
 class BasicSimulation extends Simulation {
 
@@ -17,7 +18,17 @@ class BasicSimulation extends Simulation {
       .get("http://localhost:8080/api/")
       .check(status.is(200)))
     .pause(1)
-    
-  setUp(scn.inject(atOnceUsers(50)).protocols(httpProtocol))
+
+    .exec(http("GET Usuario")
+      .get("http://localhost:8080/api/prueba/"))
+    .pause(1)
+
+     .exec(http("Create Usuario")
+      .post("http://localhost:8080/api/" + randomUUID().toString()))
+    .pause(10)
+
+
+
+  setUp(scn.inject(atOnceUsers(10)).protocols(httpProtocol))
 }
 
