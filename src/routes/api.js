@@ -2,6 +2,8 @@ const UsuarioController = require('../controllers/usuarioController');
 
 module.exports = (app) => {
 
+  app.route('/api/hello').get(UsuarioController.getHello);
+
   app.route('/api').get(UsuarioController.getUsuarios);
 
   app.route('/api/:username').get(UsuarioController.getUsuario);

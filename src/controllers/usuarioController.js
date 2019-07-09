@@ -31,6 +31,10 @@ const UsuarioController = {
       .catch(next);
   },
 
+  getHello: (_, res, next) => {
+   return res.status(OK).json({})
+  }, 
+  
   getUsuario: (req, res, next) => {
     const { username } = req.params;
     Usuario

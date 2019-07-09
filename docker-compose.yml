@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  reverse-proxy:
+    image: traefik:1.7.12 # The official Traefik docker image
+    command: --api --docker # Enables the web UI and tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "8080:8080" # The Web UI (enabled by --api)  
+    labels:
+      - "traefik.backend=Traefik" # Nombre en el Dashboard
+      - "traefik.frontend.entryPoints=http"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+  mongo:
+    image: mongo
+  frontend:
+    image: frontend
+    labels:
+      - "traefik.enable=true"
+      #- "traefik.frontend.rule=PathPrefix:/"
+      - "traefik.port=3000" # En que puerto levanta el Servicio según la IP que me asigne Traefik
+      - "traefik.backend=webapp" # Nombre en el Dashboard
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=Host:localhost" # Regla para saber como llego a este Servicio
+      - "traefik.frontend.headers.customresponseheaders.Access-Control-Allow-Origin='*'"
+    ports:
+      - "3000:3000" 
+  backend:
+    image: backend
+    labels:
+      - "traefik.enable=true"
+      #- traefik.frontend.rule=PathPrefix:/api
+      - "traefik.port=3001" # En que puerto levanta el Servicio según la IP que me asigne Traefik
+      - "traefik.backend=Api" # Nombre en el Dashboard
+      - "traefik.frontend.entryPoints=http"
+      - "traefik.frontend.rule=PathPrefix:/api;Host:localhost" # Regla para saber como llego a este Servicio
+      - "traefik.frontend.headers.customresponseheaders.Access-Control-Allow-Origin='*'"
+    environment:
+      - MONGO_HOST=mongo
+    ports:
+      - "3001:3001"
+    depends_on:
+      - mongo
