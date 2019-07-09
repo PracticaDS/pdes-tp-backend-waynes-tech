@@ -6,7 +6,7 @@ const app = express();
 
 const domain = {
   host: process.env.HOST || 'localhost',
-  port: process.env.PORT || 8080
+  port: process.env.PORT || 3001
 };
 
 // Prometheus
